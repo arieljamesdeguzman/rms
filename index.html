@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KYTech RMS - Restaurant Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -13,23 +13,24 @@
         }
 
         :root {
-            --primary-black: #0a1a1a;
-            --secondary-black: #0f2329;
-            --accent-cyan: #00d4d4;
-            --light-cyan: #00ffff;
-            --dark-cyan: #008b8b;
-            --glass-bg: rgba(0, 212, 212, 0.08);
-            --glass-border: rgba(0, 255, 255, 0.15);
-            --text-light: #e0f7f7;
+            --primary-dark: #1a0f0a;
+            --secondary-dark: #2d1810;
+            --accent-gold: #d4af37;
+            --light-gold: #f4d03f;
+            --burnt-orange: #cc5500;
+            --warm-cream: #fef5e7;
+            --glass-bg: rgba(212, 175, 55, 0.08);
+            --glass-border: rgba(244, 208, 63, 0.15);
+            --text-light: #f5e6d3;
             --text-white: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Georgia', 'Playfair Display', serif;
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
             min-height: 100vh;
         }
 
@@ -38,7 +39,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(10, 26, 26, 0.85);
+            background: rgba(26, 15, 10, 0.85);
             backdrop-filter: blur(20px);
             padding: 1.5rem 5%;
             display: flex;
@@ -51,8 +52,9 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--light-cyan);
-            letter-spacing: 1px;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            font-family: 'Georgia', serif;
         }
 
         nav {
@@ -71,7 +73,7 @@
         }
 
         nav a:hover {
-            color: var(--light-cyan);
+            color: var(--accent-gold);
         }
 
         nav a::after {
@@ -81,7 +83,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--light-cyan);
+            background: var(--accent-gold);
             transition: width 0.3s ease;
         }
 
@@ -90,22 +92,22 @@
         }
 
         .cta-button {
-            background: rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.2);
             color: var(--text-white);
             padding: 0.75rem 2rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 212, 212, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.4);
             cursor: pointer;
             backdrop-filter: blur(10px);
         }
 
         .cta-button:hover {
-            background: rgba(0, 212, 212, 0.3);
+            background: rgba(212, 175, 55, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 212, 0.4);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
         }
 
         /* Added hamburger menu button for mobile */
@@ -120,7 +122,7 @@
         .hamburger-menu span {
             width: 25px;
             height: 3px;
-            background: var(--light-cyan);
+            background: var(--accent-gold);
             border-radius: 2px;
             transition: all 0.3s ease;
         }
@@ -144,7 +146,7 @@
             top: 70px;
             left: 0;
             right: 0;
-            background: rgba(10, 26, 26, 0.95);
+            background: rgba(26, 15, 10, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             padding: 2rem 5%;
@@ -171,19 +173,19 @@
 
         .mobile-menu a {
             display: block;
-            background: rgba(0, 212, 212, 0.1);
+            background: rgba(212, 175, 55, 0.1);
             color: var(--text-light);
             padding: 1rem 1.5rem;
             border-radius: 25px;
             text-decoration: none;
             text-align: center;
-            border: 1px solid rgba(0, 212, 212, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             transition: all 0.3s ease;
         }
 
         .mobile-menu a:hover {
-            background: rgba(0, 212, 212, 0.2);
-            color: var(--light-cyan);
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
         }
 
         .mobile-menu .cta-button {
@@ -205,8 +207,8 @@
         .social-circle {
             width: 60px;
             height: 60px;
-            background: rgba(0, 212, 212, 0.15);
-            border: 2px solid rgba(0, 212, 212, 0.3);
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -302,7 +304,7 @@
             top: 0;
             width: 50%;
             height: 100%;
-            background: rgba(0, 212, 212, 0.12);
+            background: rgba(212, 175, 55, 0.12);
             backdrop-filter: blur(20px);
             border: none;
             clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
@@ -330,7 +332,7 @@
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 212, 212, 0.5);
+            text-shadow: 2px 2px 8px rgba(212, 175, 55, 0.5);
             line-height: 1.2;
             color: var(--text-white);
         }
@@ -359,10 +361,10 @@
         }
 
         .btn-primary {
-            background: rgba(0, 212, 212, 0.3);
+            background: rgba(212, 175, 55, 0.3);
             color: var(--text-white);
             padding: 1rem 2.5rem;
-            border: 2px solid rgba(0, 212, 212, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.5);
             border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
@@ -372,16 +374,16 @@
         }
 
         .btn-primary:hover {
-            background: rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.4);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 212, 212, 0.5);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
         }
 
         .btn-secondary {
             background: transparent;
             color: var(--text-white);
             padding: 1rem 2.5rem;
-            border: 2px solid var(--text-white);
+            border: 2px solid var(--accent-gold);
             border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
@@ -390,8 +392,9 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(0, 212, 212, 0.1);
+            background: rgba(212, 175, 55, 0.1);
             transform: translateY(-3px);
+            border-color: var(--light-gold);
         }
 
         /* Added mobile hero content styles */
@@ -414,7 +417,7 @@
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 212, 212, 0.5);
+            text-shadow: 2px 2px 8px rgba(212, 175, 55, 0.5);
             line-height: 1.2;
             color: var(--text-white);
         }
@@ -439,8 +442,8 @@
         .social-media-mobile .social-circle {
             width: 50px;
             height: 50px;
-            background: rgba(0, 212, 212, 0.15);
-            border: 2px solid rgba(0, 212, 212, 0.3);
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -454,8 +457,8 @@
         }
 
         .social-media-mobile .social-circle:hover {
-            background: rgba(0, 212, 212, 0.25);
-            border-color: rgba(0, 212, 212, 0.5);
+            background: rgba(212, 175, 55, 0.25);
+            border-color: rgba(212, 175, 55, 0.5);
             transform: translateY(-5px);
         }
 
@@ -472,7 +475,7 @@
 
         .section-header h2 {
             font-size: 2.5rem;
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
@@ -486,7 +489,7 @@
             transform: translateX(-50%);
             width: 60px;
             height: 4px;
-            background: var(--light-cyan);
+            background: var(--accent-gold);
             border-radius: 2px;
         }
 
@@ -506,7 +509,7 @@
 
         .about-text h3 {
             font-size: 1.8rem;
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             margin-bottom: 1.5rem;
         }
 
@@ -529,8 +532,8 @@
             gap: 1.5rem;
             align-items: flex-start;
             padding: 1.5rem;
-            background: rgba(0, 212, 212, 0.1);
-            border: 1px solid rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 10px;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
@@ -538,13 +541,13 @@
 
         .feature-item:hover {
             transform: translateX(10px);
-            background: rgba(0, 212, 212, 0.15);
-            border-color: rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         .feature-icon {
             font-size: 2rem;
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             min-width: 50px;
         }
 
@@ -556,8 +559,8 @@
         .about-image {
             width: 100%;
             height: 400px;
-            background: rgba(0, 212, 212, 0.15);
-            border: 2px solid rgba(0, 212, 212, 0.25);
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.25);
             border-radius: 15px;
             animation: slideInRight 1s ease;
             backdrop-filter: blur(10px);
@@ -583,16 +586,16 @@
             overflow: hidden;
             transition: all 0.3s ease;
             cursor: pointer;
-            background: rgba(0, 212, 212, 0.1);
-            border: 2px solid rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.2);
             backdrop-filter: blur(10px);
         }
 
         .gallery-item:hover {
             transform: translateY(-10px);
-            background: rgba(0, 212, 212, 0.15);
-            border-color: rgba(0, 212, 212, 0.4);
-            box-shadow: 0 15px 40px rgba(0, 212, 212, 0.3);
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
         }
 
         .gallery-item-overlay {
@@ -600,7 +603,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(10, 26, 26, 0.9), transparent);
+            background: linear-gradient(to top, rgba(26, 15, 10, 0.9), transparent);
             padding: 2rem 1.5rem;
             transform: translateY(30px);
             transition: all 0.3s ease;
@@ -635,8 +638,8 @@
         }
 
         .testimonial-card {
-            background: rgba(0, 212, 212, 0.1);
-            border: 2px solid rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.2);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -647,12 +650,12 @@
 
         .testimonial-card:hover {
             transform: translateY(-10px);
-            background: rgba(0, 212, 212, 0.15);
-            border-color: rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         .testimonial-stars {
-            color: var(--light-cyan);
+            color: var(--light-gold);
             font-size: 1.2rem;
             margin-bottom: 1rem;
         }
@@ -674,8 +677,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: rgba(0, 212, 212, 0.2);
-            border: 2px solid rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -709,8 +712,8 @@
 
         .team-member {
             text-align: center;
-            background: rgba(0, 212, 212, 0.1);
-            border: 2px solid rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.2);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -720,16 +723,16 @@
 
         .team-member:hover {
             transform: translateY(-10px);
-            background: rgba(0, 212, 212, 0.15);
-            border-color: rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
         .member-avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: rgba(0, 212, 212, 0.2);
-            border: 2px solid rgba(0, 212, 212, 0.4);
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.4);
             margin: 0 auto 1.5rem;
             display: flex;
             align-items: center;
@@ -740,13 +743,13 @@
         }
 
         .team-member h3 {
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
 
         .team-member .role {
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             font-weight: 600;
             margin-bottom: 1rem;
         }
@@ -759,9 +762,9 @@
         /* ==================== CTA SECTION ==================== */
         .cta-section {
             padding: 6rem 5%;
-            background: rgba(0, 212, 212, 0.1);
-            border-top: 2px solid rgba(0, 212, 212, 0.2);
-            border-bottom: 2px solid rgba(0, 212, 212, 0.2);
+            background: rgba(212, 175, 55, 0.1);
+            border-top: 2px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
             color: var(--text-white);
             text-align: center;
             animation: fadeInUp 1s ease;
@@ -771,7 +774,7 @@
         .cta-section h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: var(--light-cyan);
+            color: var(--accent-gold);
         }
 
         .cta-section p {
@@ -790,11 +793,11 @@
 
         /* ==================== FOOTER ==================== */
         footer {
-            background: rgba(10, 26, 26, 0.95);
+            background: rgba(26, 15, 10, 0.95);
             color: var(--text-light);
             padding: 4rem 5%;
             animation: fadeInUp 1s ease;
-            border-top: 1px solid rgba(0, 212, 212, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
             backdrop-filter: blur(10px);
         }
 
@@ -806,7 +809,7 @@
         }
 
         .footer-section h3 {
-            color: var(--light-cyan);
+            color: var(--accent-gold);
             margin-bottom: 1rem;
             font-size: 1.1rem;
         }
@@ -826,14 +829,14 @@
         }
 
         .footer-section ul li a:hover {
-            color: var(--light-cyan);
+            color: var(--accent-gold);
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(0, 212, 212, 0.15);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
             padding-top: 2rem;
             text-align: center;
-            color: rgba(224, 247, 247, 0.5);
+            color: rgba(245, 230, 211, 0.5);
         }
 
         /* ==================== ANIMATIONS ==================== */
@@ -862,7 +865,6 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-
             }
             to {
                 opacity: 1;
@@ -881,7 +883,6 @@
 
         /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 768px) {
-            /* Show hamburger menu and hide desktop nav */
             .hamburger-menu {
                 display: flex;
             }
@@ -890,7 +891,6 @@
                 display: none;
             }
 
-            /* Fixed About section to stack vertically on mobile */
             .about-content {
                 display: grid;
                 grid-template-columns: 1fr;
@@ -907,7 +907,6 @@
                 font-size: 1.5rem;
             }
 
-            /* Show mobile hero content and hide parallelogram */
             .hero-parallelogram {
                 display: none;
             }
@@ -947,7 +946,6 @@
                 font-size: 1.3rem;
             }
 
-            /* Improved mobile responsive padding */
             .about {
                 padding: 4rem 3%;
             }
