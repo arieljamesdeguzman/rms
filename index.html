@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYTech RMS - Restaurant Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #0a1a1a;
+            --secondary-black: #0f2329;
+            --accent-cyan: #00d4d4;
+            --light-cyan: #00ffff;
+            --dark-cyan: #008b8b;
+            --glass-bg: rgba(0, 212, 212, 0.08);
+            --glass-border: rgba(0, 255, 255, 0.15);
+            --text-light: #e0f7f7;
+            --text-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+            min-height: 100vh;
+        }
+
+        /* ==================== HEADER & NAVIGATION ==================== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 26, 26, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light-cyan);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--light-cyan);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--light-cyan);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: rgba(0, 212, 212, 0.2);
+            color: var(--text-white);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 212, 212, 0.4);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(0, 212, 212, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 212, 0.4);
+        }
+
+        /* Added hamburger menu button for mobile */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 1001;
+        }
+
+        .hamburger-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--light-cyan);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Added mobile menu drawer with animation */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 2rem 5%;
+            flex-direction: column;
+            gap: 1rem;
+            animation: slideDown 0.4s ease;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu a {
+            display: block;
+            background: rgba(0, 212, 212, 0.1);
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 212, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            background: rgba(0, 212, 212, 0.2);
+            color: var(--light-cyan);
+        }
+
+        .mobile-menu .cta-button {
+            width: 100%;
+        }
+
+        /* ==================== SOCIAL MEDIA FLOATING CIRCLES ==================== */
+        .social-media {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 500;
+        }
+
+        .social-circle {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 212, 212, 0.15);
+            border: 2px solid rgba(0, 212, 212, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            color: var(--text-white);
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            align-self: flex-end;
+        }
+
+        .social-circle:hover {
+            width: 160px;
+            border-radius: 30px;
+            justify-content: flex-end;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+            order: 2;
+        }
+
+        .social-label {
+            opacity: 0;
+            transform: translateX(20px);
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.4s ease;
+            color: var(--text-white);
+            order: 1;
+        }
+
+        .social-circle:hover .social-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        #facebook:hover {
+            background: rgba(59, 89, 152, 0.3);
+            border-color: rgba(59, 89, 152, 0.6);
+        }
+
+        #instagram:hover {
+            background: rgba(193, 53, 132, 0.3);
+            border-color: rgba(193, 53, 132, 0.6);
+        }
+
+        #twitter:hover {
+            background: rgba(29, 161, 242, 0.3);
+            border-color: rgba(29, 161, 242, 0.6);
+        }
+
+        #linkedin:hover {
+            background: rgba(10, 102, 194, 0.3);
+            border-color: rgba(10, 102, 194, 0.6);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+
+        .hero-container {
+            display: flex;
+            width: 100%;
+            position: relative;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero-parallelogram {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(0, 212, 212, 0.12);
+            backdrop-filter: blur(20px);
+            border: none;
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+            display: flex;
+            align-items: center;
+            padding: 4rem;
+            z-index: 2;
+            border-radius: 0;
+            justify-content: flex-start;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            color: var(--text-white);
+            animation: slideInLeft 1s ease;
+            margin-left: 0;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 212, 212, 0.5);
+            line-height: 1.2;
+            color: var(--text-white);
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 400px;
+        }
+
+        .hero-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            object-fit: cover;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: rgba(0, 212, 212, 0.3);
+            color: var(--text-white);
+            padding: 1rem 2.5rem;
+            border: 2px solid rgba(0, 212, 212, 0.5);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary:hover {
+            background: rgba(0, 212, 212, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 212, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-white);
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--text-white);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 212, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Added mobile hero content styles */
+        .hero-content-mobile {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: var(--text-white);
+            padding: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content-mobile h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 212, 212, 0.5);
+            line-height: 1.2;
+            color: var(--text-white);
+        }
+
+        .hero-content-mobile p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 100%;
+        }
+
+        .social-media-mobile {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .social-media-mobile .social-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 212, 212, 0.15);
+            border: 2px solid rgba(0, 212, 212, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-white);
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .social-media-mobile .social-circle:hover {
+            background: rgba(0, 212, 212, 0.25);
+            border-color: rgba(0, 212, 212, 0.5);
+            transform: translateY(-5px);
+        }
+
+        /* ==================== ABOUT SECTION ==================== */
+        .about {
+            padding: 6rem 5%;
+            animation: fadeInUp 1s ease;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--light-cyan);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--light-cyan);
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--light-cyan);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: rgba(0, 212, 212, 0.1);
+            border: 1px solid rgba(0, 212, 212, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            background: rgba(0, 212, 212, 0.15);
+            border-color: rgba(0, 212, 212, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--light-cyan);
+            min-width: 50px;
+        }
+
+        .feature-text h4 {
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 212, 212, 0.15);
+            border: 2px solid rgba(0, 212, 212, 0.25);
+            border-radius: 15px;
+            animation: slideInRight 1s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        /* ==================== GALLERY/DELICACIES SECTION ==================== */
+        .gallery {
+            padding: 6rem 5%;
+            animation: fadeInUp 1s ease;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(0, 212, 212, 0.1);
+            border: 2px solid rgba(0, 212, 212, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 212, 212, 0.15);
+            border-color: rgba(0, 212, 212, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 212, 212, 0.3);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.9), transparent);
+            padding: 2rem 1.5rem;
+            transform: translateY(30px);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-item h3 {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ==================== TESTIMONIALS SECTION ==================== */
+        .testimonials {
+            padding: 6rem 5%;
+            animation: fadeInUp 1s ease;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: rgba(0, 212, 212, 0.1);
+            border: 2px solid rgba(0, 212, 212, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 212, 212, 0.15);
+            border-color: rgba(0, 212, 212, 0.4);
+        }
+
+        .testimonial-stars {
+            color: var(--light-cyan);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 212, 212, 0.2);
+            border: 2px solid rgba(0, 212, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            color: var(--text-white);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* ==================== TEAM SECTION ==================== */
+        .team {
+            padding: 6rem 5%;
+            animation: fadeInUp 1s ease;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+            background: rgba(0, 212, 212, 0.1);
+            border: 2px solid rgba(0, 212, 212, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 212, 212, 0.15);
+            border-color: rgba(0, 212, 212, 0.4);
+        }
+
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 212, 212, 0.2);
+            border: 2px solid rgba(0, 212, 212, 0.4);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-member h3 {
+            color: var(--light-cyan);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member .role {
+            color: var(--light-cyan);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .team-member p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            padding: 6rem 5%;
+            background: rgba(0, 212, 212, 0.1);
+            border-top: 2px solid rgba(0, 212, 212, 0.2);
+            border-bottom: 2px solid rgba(0, 212, 212, 0.2);
+            color: var(--text-white);
+            text-align: center;
+            animation: fadeInUp 1s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-cyan);
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            color: var(--text-light);
+        }
+
+        .cta-buttons-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: rgba(10, 26, 26, 0.95);
+            color: var(--text-light);
+            padding: 4rem 5%;
+            animation: fadeInUp 1s ease;
+            border-top: 1px solid rgba(0, 212, 212, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--light-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--light-cyan);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(0, 212, 212, 0.15);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(224, 247, 247, 0.5);
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 768px) {
+            /* Show hamburger menu and hide desktop nav */
+            .hamburger-menu {
+                display: flex;
+            }
+
+            nav {
+                display: none;
+            }
+
+            /* Fixed About section to stack vertically on mobile */
+            .about-content {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                align-items: stretch;
+            }
+
+            .about-image {
+                width: 100%;
+                height: 300px;
+            }
+
+            .about-text h3 {
+                font-size: 1.5rem;
+            }
+
+            /* Show mobile hero content and hide parallelogram */
+            .hero-parallelogram {
+                display: none;
+            }
+
+            .hero-content {
+                display: none;
+            }
+
+            .hero-content-mobile {
+                display: flex;
+            }
+
+            .hero-video {
+                opacity: 0.3;
+            }
+
+            .social-media {
+                display: none;
+            }
+
+            .hero-content-mobile h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-content-mobile p {
+                font-size: 0.95rem;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 3%;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            /* Improved mobile responsive padding */
+            .about {
+                padding: 4rem 3%;
+            }
+
+            .gallery {
+                padding: 4rem 3%;
+            }
+
+            .testimonials {
+                padding: 4rem 3%;
+            }
+
+            .team {
+                padding: 4rem 3%;
+            }
+
+            .cta-section {
+                padding: 4rem 3%;
+            }
+
+            footer {
+                padding: 3rem 3%;
+            }
+
+            nav {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .hero-content-mobile h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content-mobile p {
+                font-size: 0.9rem;
+            }
+
+            .social-media-mobile .social-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .feature-item {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER & NAVIGATION -->
+    <header>
+        <div class="logo">KYTech RMS</div>
+        <!-- Added hamburger menu button -->
+        <div class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="nav-desktop">
+            <a class="nav-link" data-target="home">Home</a>
+            <a class="nav-link" data-target="about">About</a>
+            <a class="nav-link" data-target="delicacies">Delicacies</a>
+            <a class="nav-link" data-target="testimonials">Reviews</a>
+            <a class="nav-link" data-target="team">Team</a>
+            <a class="nav-link" data-target="contact">Contact</a>
+            <button class="cta-button">Book a Table</button>
+        </nav>
+        <!-- Added mobile menu drawer -->
+        <div class="mobile-menu" id="mobile-menu">
+            <a class="nav-link" data-target="home">Home</a>
+            <a class="nav-link" data-target="about">About</a>
+            <a class="nav-link" data-target="delicacies">Delicacies</a>
+            <a class="nav-link" data-target="testimonials">Reviews</a>
+            <a class="nav-link" data-target="team">Team</a>
+            <a class="nav-link" data-target="contact">Contact</a>
+            <button class="cta-button">Book a Table</button>
+        </div>
+    </header>
+
+    <!-- SOCIAL MEDIA FLOATING CIRCLES -->
+    <div class="social-media"> 
+        <div id="facebook" class="social-circle" onclick="window.open('https://facebook.com', '_blank')">
+            <span class="social-label">Facebook</span>
+            <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+        </div>
+
+        <div id="instagram" class="social-circle" onclick="window.open('https://instagram.com', '_blank')">
+            <span class="social-label">Instagram</span>
+            <span class="social-icon"><i class="fab fa-instagram"></i></span>
+        </div>
+
+        <div id="twitter" class="social-circle" onclick="window.open('https://x.com', '_blank')">
+            <span class="social-label">Twitter (X)</span>
+            <span class="social-icon"><i class="fab fa-x-twitter"></i></span>
+        </div>
+
+        <div id="linkedin" class="social-circle" onclick="window.open('https://linkedin.com', '_blank')">
+            <span class="social-label">LinkedIn</span>
+            <span class="social-icon"><i class="fab fa-linkedin-in"></i></span>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="bg_vid.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="hero-parallelogram">
+                <div class="hero-content">
+                    <h1>Welcome to KYTech RMS</h1>
+                    <p>Experience exquisite dining with our premium restaurant management system. Discover culinary excellence at its finest.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary">Explore Menu</button>
+                        <button class="btn-secondary">Learn More</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Added hero-content-mobile for mobile view outside parallelogram -->
+            <div class="hero-content-mobile">
+                <h1>Welcome to KYTech RMS</h1>
+                <p>Experience exquisite dining with our premium restaurant management system. Discover culinary excellence at its finest.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Explore Menu</button>
+                    <button class="btn-secondary">Learn More</button>
+                </div>
+                <div class="social-media-mobile">
+                    <div id="facebook-mobile" class="social-circle" onclick="window.open('https://facebook.com', '_blank')">
+                        <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+                    </div>
+                    <div id="instagram-mobile" class="social-circle" onclick="window.open('https://instagram.com', '_blank')">
+                        <span class="social-icon"><i class="fab fa-instagram"></i></span>
+                    </div>
+                    <div id="twitter-mobile" class="social-circle" onclick="window.open('https://x.com', '_blank')">
+                        <span class="social-icon"><i class="fab fa-x-twitter"></i></span>
+                    </div>
+                    <div id="linkedin-mobile" class="social-circle" onclick="window.open('https://linkedin.com', '_blank')">
+                        <span class="social-icon"><i class="fab fa-linkedin-in"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+        <div class="section-header">
+            <h2>About Our Restaurant</h2>
+            <p>Discover what makes KYTech RMS the premier choice for restaurant management</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Culinary Excellence Redefined</h3>
+                <p>At KYTech RMS, we combine traditional culinary techniques with modern innovation to deliver an unforgettable dining experience. Our restaurant management system ensures seamless operations while our chefs craft exceptional dishes.</p>
+                <p>Every dish is prepared with premium ingredients, attention to detail, and a passion for gastronomy. We believe that great food brings people together.</p>
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">🍽️</div>
+                        <div class="feature-text">
+                            <h4>Premium Cuisine</h4>
+                            <p>Carefully selected ingredients and expert preparation</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⭐</div>
+                        <div class="feature-text">
+                            <h4>Excellence Service</h4>
+                            <p>Dedicated staff committed to your satisfaction</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌟</div>
+                        <div class="feature-text">
+                            <h4>Unique Experience</h4>
+                            <p>Memorable moments in an elegant atmosphere</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image"></div>
+        </div>
+    </section>
+
+    <!-- DELICACIES/GALLERY SECTION -->
+    <section class="gallery" id="delicacies">
+        <div class="section-header">
+            <h2>Our Delicacies</h2>
+            <p>Explore our signature dishes and culinary masterpieces</p>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Grilled Salmon</h3>
+                    <p>Fresh Atlantic salmon with seasonal vegetables</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Truffle Risotto</h3>
+                    <p>Creamy arborio rice with black truffle shavings</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Wagyu Steak</h3>
+                    <p>Premium Japanese beef, perfectly seared</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Lobster Bisque</h3>
+                    <p>Velvety soup with fresh Maine lobster</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Duck Confit</h3>
+                    <p>Slow-cooked duck leg with crispy potatoes</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <div class="gallery-item-overlay">
+                    <h3>Chocolate Soufflé</h3>
+                    <p>Light and airy chocolate dessert masterpiece</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-header">
+            <h2>Guest Reviews</h2>
+            <p>Hear from our satisfied customers</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The dining experience at KYTech RMS was absolutely phenomenal. Every dish was a work of art, and the service was impeccable."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JD</div>
+                    <div class="author-info">
+                        <h4>John Davis</h4>
+                        <p>Food Critic</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"An unforgettable evening with exceptional food and wine pairings. Highly recommend for special occasions!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SM</div>
+                    <div class="author-info">
+                        <h4>Sarah Mitchell</h4>
+                        <p>Lifestyle Blogger</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The attention to detail in both food and service is remarkable. Will definitely be returning!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RC</div>
+                    <div class="author-info">
+                        <h4>Robert Chen</h4>
+                        <p>Business Executive</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="team" id="team">
+        <div class="section-header">
+            <h2>Our Team</h2>
+            <p>Meet the talented professionals behind KYTech RMS</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-avatar">👨‍🍳</div>
+                <h3>Chef Marcus</h3>
+                <div class="role">Head Chef</div>
+                <p>With 20 years of culinary experience, Chef Marcus leads our kitchen with passion and innovation.</p>
+            </div>
+            <div class="team-member">
+                <div class="member-avatar">👩‍💼</div>
+                <h3>Emily Watson</h3>
+                <div class="role">Restaurant Manager</div>
+                <p>Ensures exceptional service and smooth operations with attention to every detail.</p>
+            </div>
+            <div class="team-member">
+                <div class="member-avatar">👨‍💻</div>
+                <h3>David Park</h3>
+                <div class="role">System Administrator</div>
+                <p>Manages our RMS system to optimize restaurant operations and customer experience.</p>
+            </div>
+            <div class="team-member">
+                <div class="member-avatar">🧑‍🍳</div>
+                <h3>Sophie Laurent</h3>
+                <div class="role">Pastry Chef</div>
+                <p>Creates delightful desserts that are as beautiful as they are delicious.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL-TO-ACTION SECTION -->
+    <section class="cta-section" id="contact">
+        <h2>Ready for an Exceptional Dining Experience?</h2>
+        <p>Reserve your table at KYTech RMS today and enjoy world-class cuisine and service</p>
+        <div class="cta-buttons-group">
+            <button class="btn-primary">Book a Table</button>
+            <button class="btn-secondary">Contact Us</button>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About KYTech RMS</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Awards</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Dine In</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Catering</a></li>
+                    <li><a href="#">Private Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                    <li><a href="mailto:info@kytech.com">info@kytech.com</a></li>
+                    <li><a href="#">123 Culinary Street</a></li>
+                    <li><a href="#">City, State 12345</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 KYTech RMS - Restaurant Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Added hamburger menu toggle functionality
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // ... existing code ...
+        // SMOOTH SCROLL TO SECTIONS
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('data-target');
+                const element = document.getElementById(target);
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ANIMATE ELEMENTS ON SCROLL
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // CTA BUTTONS
+        document.querySelectorAll('.cta-button, .btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('Book')) {
+                    alert('Booking feature would be integrated here!');
+                }
+            });
+        });
+
+        // HEADER SCROLL EFFECT
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 2px 20px rgba(212, 175, 55, 0.15)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
